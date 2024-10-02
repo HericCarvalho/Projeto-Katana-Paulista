@@ -1,12 +1,19 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Anarquista : MonoBehaviour
 {
     [SerializeField] private float Vel;
 
+    [SerializeField] private float Aceleração;
+    [SerializeField] private float Freiar;
+    [SerializeField] private float VelMaxima;
+
     [SerializeField] private Rigidbody2D rig;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Animator animator;
+
+
 
     private void FixedUpdate()
     {
