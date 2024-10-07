@@ -75,7 +75,7 @@ public class NovaMovimentação : MonoBehaviour
             {
                 this.animator.SetBool("Correndo", false);
             }
-            if ()
+            
         }
         else
         {

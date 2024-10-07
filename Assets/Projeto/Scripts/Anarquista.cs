@@ -5,10 +5,6 @@ public class Anarquista : MonoBehaviour
 {
     [SerializeField] private float Vel;
 
-    [SerializeField] private float Aceleração;
-    [SerializeField] private float Freiar;
-    [SerializeField] private float VelMaxima;
-
     [SerializeField] private Rigidbody2D rig;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Animator animator;
@@ -46,6 +42,16 @@ public class Anarquista : MonoBehaviour
         else
         {
             this.animator.SetBool("Andando", false);
+        }
+
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            this.animator.SetBool("Correndo", true);
+
+        }
+        else
+        {
+            this.animator.SetBool("Correndo", false);
         }
     }
 }
