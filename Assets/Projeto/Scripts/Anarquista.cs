@@ -17,14 +17,20 @@ public class Anarquista : MonoBehaviour
 
     [SerializeField] private string estado;
     private string AR = "ar";
-    private string CHAO = "chao";
+    [SerializeField] private string CHAO = "chao";
 
-    
-    
+    enum Estado
+    {
+        Ar,
+        Chao
+    }
 
     private void FixedUpdate()
     {
         Movimento();
+    }
+    private void Update()
+    {
         Jump();
     }
 
@@ -69,28 +75,30 @@ public class Anarquista : MonoBehaviour
         }
     }
     private void Jump()
-    {        
-    if (Input.GetKeyDown (KeyCode.Space) && estado==CHAO)
     {
-        isJumping = true;
-        rig.velocity = Vector2.up * jumpForce;
-        jumpTimeCounter = jumpTime;            
-    }
-    
-    if (Input.GetKey(KeyCode.Space) && isJumping==true)
-    {
-        if (jumpTimeCounter>0)
+        if (Input.GetKeyDown(KeyCode.Space) && estado == CHAO)
         {
             rig.velocity = Vector2.up * jumpForce;
-            jumpTimeCounter -= Time.deltaTime;
+            jumpTimeCounter = jumpTime;
+            print("pulo");
         }
-        else { isJumping = false; }
-    }
-    
-    if (Input.GetKeyUp(KeyCode.Space))
-        isJumping = false;
-    }    
 
+
+        if (Input.GetKey(KeyCode.Space))
+        {
+            if (jumpTimeCounter > 0)
+            {
+                rig.velocity = Vector2.up * jumpForce;
+                jumpTimeCounter -= Time.deltaTime;
+            }
+            else { isJumping = false; }
+        }
+
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            isJumping = false;
+        }
+    }
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Chão")
@@ -98,7 +106,6 @@ public class Anarquista : MonoBehaviour
             estado = CHAO;
         }
     }
-
     private void OnCollisionExit2D(Collision2D collision)
     {
         if (estado == CHAO)
