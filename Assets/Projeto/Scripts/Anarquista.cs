@@ -14,16 +14,12 @@ public class Anarquista : MonoBehaviour
     [SerializeField] private Rigidbody2D rig;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Animator animator;
+    [SerializeField]private BoxCollider2D hitbox;
 
-    [SerializeField] private string estado;
+    private string estado;
     private string AR = "ar";
-    [SerializeField] private string CHAO = "chao";
+    private string CHAO = "chao";
 
-    enum Estado
-    {
-        Ar,
-        Chao
-    }
 
     private void FixedUpdate()
     {
@@ -32,6 +28,7 @@ public class Anarquista : MonoBehaviour
     private void Update()
     {
         Jump();
+        animação();
     }
 
     private void Movimento()
@@ -80,7 +77,6 @@ public class Anarquista : MonoBehaviour
         {
             rig.velocity = Vector2.up * jumpForce;
             jumpTimeCounter = jumpTime;
-            print("pulo");
         }
 
 
@@ -88,15 +84,29 @@ public class Anarquista : MonoBehaviour
         {
             if (jumpTimeCounter > 0)
             {
+
                 rig.velocity = Vector2.up * jumpForce;
                 jumpTimeCounter -= Time.deltaTime;
             }
-            else { isJumping = false; }
+            else 
+            { 
+                isJumping = false;
+            }
+            
         }
 
         if (Input.GetKeyUp(KeyCode.Space))
         {
             isJumping = false;
+        }
+    }
+    private void Ataque ()
+    {
+        if (Input.GetButtonDown("FIRE1")) // Attack on Space key press.
+        {
+            animator.SetTrigger("MeleeAttack");
+            Invoke("ActivateHitbox", 0.2f); // Activate hitbox after 0.2 seconds.
+            Invoke("DeactivateHitbox", 0.4f); // Deactivate hitbox after 0.4 seconds.
         }
     }
     private void OnCollisionEnter2D(Collision2D collision)
@@ -112,6 +122,38 @@ public class Anarquista : MonoBehaviour
         {
             if (collision.gameObject.tag == "Chão")
                 estado = AR;
+        }
+    }
+    void ActivateHitbox()
+    {
+        hitbox.gameObject.SetActive(true);
+    }
+
+    void DeactivateHitbox()
+    {
+        hitbox.gameObject.SetActive(false);
+    }
+    void animação()
+    {
+        float velocidadeY = rig.velocity.y;
+
+        if (estado == AR)
+        {
+            if (velocidadeY > 0)
+            {
+                this.animator.SetBool("Pulando", true);
+                this.animator.SetBool("Caindo", false);
+            }
+            else if (velocidadeY < 0)
+            {
+                this.animator.SetBool("Pulando", false);
+                this.animator.SetBool("Caindo", true);
+            }
+        }
+        else if (estado == CHAO)
+        {
+            this.animator.SetBool("Caindo", false);
+            
         }
     }
 }
