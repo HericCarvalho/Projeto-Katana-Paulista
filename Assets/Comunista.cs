@@ -1,61 +1,92 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class Comunista : MonoBehaviour
 {
-    public GameObject pontoA;
-    public GameObject pontoB;
-    private Rigidbody2D rb;
-    private Animator anim;
-    private Transform currentPoint;
+  
+    public Rigidbody2D rb;
+    public Transform ledgeDetector;
+    //private Animator anim;
+    public LayerMask groundlayer, obstacleLayer, playerLayer;
+    public float raycastDistance, obstacleDistance, playerDistance;
     public float speed;
+    private bool facingRight = true;
+    private bool playerDetected;
+    public float DetectionPause;
     // Start is called before the first frame update
-    void Start()
+
+    private void Update()
     {
-        rb = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
-        currentPoint = pontoB.transform;
-        anim.SetBool("isRunning", true);
+        CheckForObstacles();
+        CheckForPlayer();
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        Vector2 point = currentPoint.position - transform.position;
-        if (currentPoint == pontoB.transform)
+        if (!playerDetected)
         {
-            rb.velocity = new Vector2(speed, 0);
-        }
-        else
-        {
-            rb.velocity = new Vector2(-speed, 0);
-        }
-        if(Vector2.Distance(transform.position,currentPoint.position) < 0.5f && currentPoint == pontoB.transform)
-        {
-            Flip();
-            currentPoint = pontoA.transform;
-        }
-        if(Vector2.Distance(transform.position, currentPoint.position) < 0.5f && currentPoint == pontoA.transform)
-        {
-            Flip();
-            currentPoint = pontoB.transform;
+            if (facingRight)
+            {
+                rb.velocity = new Vector2(speed, rb.velocity.y);
+            }
+            else
+            {
+                rb.velocity = new Vector2(-speed, rb.velocity.y);
+
+            }
         }
     }
-    private void Flip()
+
+    void CheckForObstacles ()
     {
-        Vector2 localScale = transform.localScale;
-        if (currentPoint == pontoB.transform)
+        RaycastHit2D hit = Physics2D.Raycast(ledgeDetector.position, Vector2.down, raycastDistance, groundlayer);
+        RaycastHit2D hitObstacle = Physics2D.Raycast(ledgeDetector.position, Vector2.down, obstacleDistance, obstacleLayer);
+
+        if (hit.collider == null || hitObstacle.collider == true)
         {
-            localScale.x = -1;
-            transform.localScale = localScale;
+            Debug.Log("cade o chão");
+            Flip();
         }
-        else
-        {
-            localScale.x =1;
-            transform.localScale = localScale;
-        }
-        
     }
+    void CheckForPlayer()
+    {
+        RaycastHit2D hitplayer = Physics2D.Raycast(ledgeDetector.position, facingRight ? Vector2.right : Vector2.left, playerDistance, playerLayer);
+
+        if (hitplayer.collider == true)
+        {
+            StartCoroutine(PLayerDetected());
+        }
+        else if (playerDetected)
+        {
+            StartCoroutine(PlayerNotDetected());
+        }
+    }
+
+    IEnumerator PLayerDetected()
+    {
+        Debug.Log("player");
+        playerDetected= true;
+        rb.velocity = Vector2.zero; 
+        yield return new WaitForSeconds(DetectionPause);
+    }
+    IEnumerator PlayerNotDetected()
+    {
+        yield return new WaitForSeconds(DetectionPause);
+        playerDetected= false;
+    }
+
+    void Flip()
+    {
+        facingRight =!facingRight;
+        transform.Rotate(0, 180, 0);
+    }
+    private void OnDrawGizmos()
+    {
+       Gizmos.DrawRay(ledgeDetector.position, (facingRight ? Vector2.right : Vector2.left) * playerDistance);
+    }
+
 }
