@@ -2364,6 +2364,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1380701481}
     - target: {fileID: 5051255365710213130, guid: 2175ef92e17ef6f40a843c91d37abbcc, type: 3}
+      propertyPath: chargeTime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5051255365710213130, guid: 2175ef92e17ef6f40a843c91d37abbcc, type: 3}
+      propertyPath: chargeSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5051255365710213130, guid: 2175ef92e17ef6f40a843c91d37abbcc, type: 3}
       propertyPath: ledgeDetector
       value: 
       objectReference: {fileID: 1259374584}
