@@ -14,11 +14,11 @@ public class enemy_state
     }
     public virtual void Enter()
     {
-        Debug.Log("enterd" + animationName);
+        //enemy.anim.SetBool(animationName, true);
     }
     public virtual void Exit()
     {
-
+        //enemy.anim.SetBool(animationName, false);
     }
     public virtual void LogicUpdate()  //substitu~ção do Update
     {

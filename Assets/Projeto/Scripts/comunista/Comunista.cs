@@ -11,19 +11,24 @@ public class Comunista : MonoBehaviour
     public Patrulha_state patrolstate;
     public PlayerD_state playerDstate;
     public Charge_state chargeState;
+    public AtaqueMelee meleeAttackState;
     public Rigidbody2D rb;
     public Transform ledgeDetector;
-    //private Animator anim;
-    public LayerMask groundlayer, obstacleLayer, playerLayer;
+    public Animator anim;
+    public LayerMask groundlayer, obstacleLayer, playerLayer,damageableLayer;
     public float raycastDistance, obstacleDistance, playerDistance;
+    public float meleeDistance;
     public float speed;
     public int  facingDirection = 1;
-    private bool playerDetected;
+    //private bool playerDetected;
     public float DetectionPause;
     public float stateTime; 
     public float playerDWaitTime = 1;
     public float chargeTime;
     public float chargeSpeed;
+    public float damageAmount;
+    public Vector2 knockbackAngle;
+    public float knockbackForce;
 
     #endregion
     #region Unity callbacks
@@ -32,6 +37,7 @@ public class Comunista : MonoBehaviour
         patrolstate = new Patrulha_state(this, "patrol");
         playerDstate = new PlayerD_state(this, "player detected");
         chargeState = new Charge_state(this, "charge");
+        meleeAttackState = new AtaqueMelee(this, "meleeAttack");
         
         CurrentState = patrolstate;
         CurrentState.Enter();
@@ -70,6 +76,19 @@ public class Comunista : MonoBehaviour
         RaycastHit2D hitplayer = Physics2D.Raycast(ledgeDetector.position, facingDirection ==1 ? Vector2.right : Vector2.left, playerDistance, playerLayer);
 
         if (hitplayer.collider == true)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    public bool CheckForMeleeTarget()
+    {
+        RaycastHit2D MeleeTarget = Physics2D.Raycast(ledgeDetector.position, facingDirection == 1 ? Vector2.right : Vector2.left, meleeDistance, playerLayer);
+
+        if (MeleeTarget.collider == true)
         {
             return true;
         }
