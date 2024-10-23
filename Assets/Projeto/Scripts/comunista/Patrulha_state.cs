@@ -4,7 +4,7 @@ using UnityEditor.Tilemaps;
 using UnityEngine;
 using static UnityEngine.RuleTile.TilingRuleOutput;
 
-public class Patrulha_state :enemy_state
+public class Patrulha_state : enemy_state
 {
     public Patrulha_state(Comunista enemy, string animationName) : base(enemy, animationName)
     {
@@ -28,7 +28,7 @@ public class Patrulha_state :enemy_state
         {
             Flip();
         }
-       
+
     }
 
     public override void PhysicsUpdate()

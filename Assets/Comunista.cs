@@ -15,14 +15,14 @@ public class Comunista : MonoBehaviour
     public Rigidbody2D rb;
     public Transform ledgeDetector;
     public Animator anim;
-    public LayerMask groundlayer, obstacleLayer, playerLayer,damageableLayer;
+    public LayerMask groundlayer, obstacleLayer, playerLayer, damageableLayer;
     public float raycastDistance, obstacleDistance, playerDistance;
     public float meleeDistance;
     public float speed;
-    public int  facingDirection = 1;
+    public int facingDirection = 1;
     //private bool playerDetected;
     public float DetectionPause;
-    public float stateTime; 
+    public float stateTime;
     public float playerDWaitTime = 1;
     public float chargeTime;
     public float chargeSpeed;
@@ -38,14 +38,14 @@ public class Comunista : MonoBehaviour
         playerDstate = new PlayerD_state(this, "player detected");
         chargeState = new Charge_state(this, "charge");
         meleeAttackState = new AtaqueMelee(this, "meleeAttack");
-        
+
         CurrentState = patrolstate;
         CurrentState.Enter();
     }
     private void Update()
     {
-        CurrentState .LogicUpdate();
-      
+        CurrentState.LogicUpdate();
+
     }
 
     // Update is called once per frame
@@ -53,10 +53,10 @@ public class Comunista : MonoBehaviour
     {
 
         CurrentState.PhysicsUpdate();
-       
+
     }
 
-    public bool CheckForObstacles ()
+    public bool CheckForObstacles()
     {
         RaycastHit2D hit = Physics2D.Raycast(ledgeDetector.position, Vector2.down, raycastDistance, groundlayer);
         RaycastHit2D hitObstacle = Physics2D.Raycast(ledgeDetector.position, Vector2.down, obstacleDistance, obstacleLayer);
@@ -71,9 +71,9 @@ public class Comunista : MonoBehaviour
             return false;
         }
     }
-   public bool CheckForPlayer()
+    public bool CheckForPlayer()
     {
-        RaycastHit2D hitplayer = Physics2D.Raycast(ledgeDetector.position, facingDirection ==1 ? Vector2.right : Vector2.left, playerDistance, playerLayer);
+        RaycastHit2D hitplayer = Physics2D.Raycast(ledgeDetector.position, facingDirection == 1 ? Vector2.right : Vector2.left, playerDistance, playerLayer);
 
         if (hitplayer.collider == true)
         {
@@ -102,9 +102,9 @@ public class Comunista : MonoBehaviour
     #region Outras funções
     private void OnDrawGizmos()
     {
-       Gizmos.DrawRay(ledgeDetector.position, (facingDirection ==1 ? Vector2.right : Vector2.left) * playerDistance);
+        Gizmos.DrawRay(ledgeDetector.position, (facingDirection == 1 ? Vector2.right : Vector2.left) * playerDistance);
     }
-    
+
     public void SwitchState(enemy_state newState)
     {
         CurrentState.Exit();

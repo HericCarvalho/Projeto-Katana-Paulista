@@ -41,7 +41,7 @@ public class Charge_state : enemy_state
         }
         else
         {
-            if(enemy.CheckForMeleeTarget())
+            if (enemy.CheckForMeleeTarget())
             {
                 enemy.SwitchState(enemy.meleeAttackState);
             }

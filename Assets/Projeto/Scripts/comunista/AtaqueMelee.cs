@@ -17,9 +17,9 @@ public class AtaqueMelee : enemy_state
         foreach (Collider2D hitCollider in hitColliders)
         {
             IDamageable damageable = hitCollider.GetComponent<IDamageable>();
-            if (damageable != null) 
+            if (damageable != null)
             {
-                hitCollider.GetComponent<Rigidbody2D>  ().velocity= new Vector2 (enemy.knockbackAngle.x * enemy.facingDirection, enemy.knockbackAngle.y) * enemy.knockbackForce;
+                hitCollider.GetComponent<Rigidbody2D>().velocity = new Vector2(enemy.knockbackAngle.x * enemy.facingDirection, enemy.knockbackAngle.y) * enemy.knockbackForce;
                 damageable.Damage(enemy.damageAmount);
             }
         }

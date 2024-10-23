@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class enemy_state 
+public class enemy_state
 {
     protected Comunista enemy;
     protected string animationName;

@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class obstaculohealth : MonoBehaviour, IDamageable
+public class PlayerHealth : MonoBehaviour, IDamageable
 {
     public int health;
 
     public void Damage(float damageAmount)
     {
-        Debug.Log("danozão");
+        Debug.Log("megadano");
         health -= (int)damageAmount;
     }
 
