@@ -14,4 +14,13 @@ EditorBuildSettings:
   - enabled: 1
     path: "Assets/Projeto/Scenes/2\xB0Fase - Cidade -.unity"
     guid: 5e6cd4e7a132fb84db9e3219a8f0936b
+  - enabled: 1
+    path: "Assets/Projeto/Scenes/3\xB0Fase Final.unity"
+    guid: 74ceb800980765e44a4446e3b6ed52d9
+  - enabled: 1
+    path: Assets/Projeto/Scenes/Sala do Boss.unity
+    guid: 421735859359cf04397ddf63cc89ea25
+  - enabled: 1
+    path: Assets/Projeto/Scenes/Cena da Morte.unity
+    guid: b98303d1b7ae32343be5ffebd170ce1f
   m_configObjects: {}

@@ -26,7 +26,7 @@ public class Patrulha_state : enemy_state
         }
         if (enemy.CheckForObstacles())
         {
-            Flip();
+            enemy.Flip();
         }
 
     }
@@ -46,9 +46,5 @@ public class Patrulha_state : enemy_state
 
         }
     }
-    void Flip()
-    {
-        enemy.facingDirection = -enemy.facingDirection;
-        enemy.transform.Rotate(0, 180, 0);
-    }
+    
 }

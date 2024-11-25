@@ -7,6 +7,7 @@ public interface IDamageable
 {
     void Damage(float damageAmount);
 
-
     void Damage(float damageAmount, float KBForce, Vector2 KBAngle);
+
+
 }

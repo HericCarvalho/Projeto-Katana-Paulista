@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Inimigo_Voa : MonoBehaviour
+public class Inimigo_Voa : MonoBehaviour, IDamageable
 {
     public float speed;
     private Transform player;
@@ -12,9 +12,12 @@ public class Inimigo_Voa : MonoBehaviour
     public GameObject tiroPos;
     public float tiroRate = 1f;
     private float tiroSpeed;
+    public float Vida;
+    public float MaxVida = 10;
 
     void Start()
     {
+        Vida = MaxVida;
         player=GameObject.FindGameObjectWithTag("Player").transform;
 
     }
@@ -39,6 +42,16 @@ public class Inimigo_Voa : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, lineOfSite);
         Gizmos.DrawWireSphere(transform.position, tiroRange);
 
+    }
+
+    public void Damage(float damageAmount)
+    {
+     
+    }
+
+    public void Damage(float damageAmount, float KBForce, Vector2 KBAngle)
+    {
+        Vida -= damageAmount;
     }
 }
 

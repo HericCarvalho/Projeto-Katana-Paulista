@@ -2,14 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class drone : MonoBehaviour
+public class drone : MonoBehaviour,IDamageable
 {
     public float speed;
     public bool chase = false;
     public Transform pontoinicio;
     private GameObject player;
+    public float Vida;
+    public float MAxVida=10;
     void Start()
     {
+        Vida = MAxVida;
         player = GameObject.FindGameObjectWithTag("Player");
     }
 
@@ -58,5 +61,14 @@ public class drone : MonoBehaviour
 
         }
         Destroy(gameObject);
+    }
+
+    public void Damage(float damageAmount)
+    {
+    }
+
+    public void Damage(float damageAmount, float KBForce, Vector2 KBAngle)
+    {
+        Vida -= damageAmount;
     }
 }

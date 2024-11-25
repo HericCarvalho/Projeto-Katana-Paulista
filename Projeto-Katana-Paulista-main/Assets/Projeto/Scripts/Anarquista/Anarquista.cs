@@ -12,7 +12,10 @@ public class Anarquista : MonoBehaviour, IDamageable
     public Barra_Overdose Barra_Overdose;
     private BuffUps buff;
     public int Drug;
-    //public int MaxDrug = 5;
+    public float damage;
+    public float KBForce;
+    public Vector2 KBAngle;
+
 
     [SerializeField] public float Vel;
     private float jumpTimeCounter;
@@ -24,7 +27,8 @@ public class Anarquista : MonoBehaviour, IDamageable
     [SerializeField] private Rigidbody2D rig;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Animator animator;
-    [SerializeField] private BoxCollider2D hitbox;
+    [SerializeField] private BoxCollider2D hitboxD;
+    [SerializeField] private BoxCollider2D hitboxE;
 
     private string estado;
     private string AR = "ar";
@@ -44,7 +48,11 @@ public class Anarquista : MonoBehaviour, IDamageable
         health -= (int)damageAmount;
         Barra_VIda.SetHealth(health);
     }
-    
+
+    public void Damage(float damageAmount, float KBForce, Vector2 KBAngle)
+    {
+    }
+
     public void Droga(int drugAmount)
     {
         Drug += (int)drugAmount;
@@ -108,12 +116,12 @@ public class Anarquista : MonoBehaviour, IDamageable
         {
 
             this.animator.SetBool("Correndo", true);
-            Vel = 300;
+            Vel = 400;
         }
         else
         {
             this.animator.SetBool("Correndo", false);
-            Vel = 100;
+            Vel = 200;
         }
 
     }
@@ -156,8 +164,6 @@ public class Anarquista : MonoBehaviour, IDamageable
             this.animator.SetBool("Ataque", true);
             Invoke("ActivateHitbox", 0.2f); // Activate hitbox after 0.2 seconds.
             Invoke("DeactivateHitbox", 0.4f); // Deactivate hitbox after 0.4 seconds.
-           
-
         }
         else
         {
@@ -181,12 +187,20 @@ public class Anarquista : MonoBehaviour, IDamageable
     }
     void ActivateHitbox()
     {
-        hitbox.gameObject.SetActive(true);
+        if (this.spriteRenderer.flipX == false)
+        {
+            hitboxD.gameObject.SetActive(true);
+        }
+        if (this.spriteRenderer.flipX == true)
+        {
+            hitboxE.gameObject.SetActive(true);
+        }
     }
 
     void DeactivateHitbox()
     {
-        hitbox.gameObject.SetActive(false);
+        hitboxD.gameObject.SetActive(false);
+        hitboxE.gameObject.SetActive(false);
     }
     void animação()
     {
@@ -224,18 +238,21 @@ public class Anarquista : MonoBehaviour, IDamageable
         Debug.Log("Terminou" + (System.DateTime.Now - t));
         Time.timeScale = 1;
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        IDamageable hitbox = collision.GetComponent<IDamageable>();
-        if (hitbox != null)
+        IDamageable damageable = collision.GetComponent<IDamageable>();
+
+        if (damageable != null)
         {
-            hitbox.Damage(5, 5, new Vector2(2, 2));
+            ActivateHitbox();
+            int FacingDirection = transform.position.x > collision.transform.position.x ? -1 : 1;
+            damageable.Damage(damage, KBForce, new Vector2 (KBAngle.x * FacingDirection, KBAngle.y));
+            Debug.Log("bateu");
         }
+
     }
 
-    public void Damage(float damageAmount, float KBForce, Vector2 KBAngle)
-    {
-    }
 }
 
 

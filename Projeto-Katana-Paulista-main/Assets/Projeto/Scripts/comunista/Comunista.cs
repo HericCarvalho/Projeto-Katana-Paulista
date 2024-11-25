@@ -7,13 +7,13 @@ using UnityEngine;
 public class Comunista : MonoBehaviour, IDamageable
 {
     #region Variaveis
-
     public enemy_state CurrentState;
     public Patrulha_state patrolstate;
     public PlayerD_state playerDstate;
     public Charge_state chargeState;
     public AtaqueMelee meleeAttackState;
     public DamagedState damagedState;
+    public DeathState deathState;
     public Rigidbody2D rb;
     public Transform ledgeDetector;
     public Animator anim;
@@ -29,10 +29,10 @@ public class Comunista : MonoBehaviour, IDamageable
     public float chargeTime;
     public float chargeSpeed;
     public float damageAmount;
-    public float currentHealth;
-    public float MaxHealth = 20;
     public Vector2 knockbackAngle;
     public float knockbackForce;
+    public float Health;
+    public float MaxHealth = 20;
 
     #endregion
     #region Unity callbacks
@@ -42,15 +42,16 @@ public class Comunista : MonoBehaviour, IDamageable
         playerDstate = new PlayerD_state(this, "player detected");
         chargeState = new Charge_state(this, "charge");
         meleeAttackState = new AtaqueMelee(this, "meleeAttack");
-        damagedState = new DamagedState(this, "damagedState");
+        damagedState = new DamagedState(this, "damaged");
+        deathState = new DeathState(this, "death");
 
         CurrentState = patrolstate;
         CurrentState.Enter();
     }
 
-    private void Start()
+    void Start()
     {
-        currentHealth = MaxHealth;
+        Health = MaxHealth;
     }
     private void Update()
     {
@@ -135,14 +136,29 @@ public class Comunista : MonoBehaviour, IDamageable
 
     public void Damage(float damageAmount)
     {
+
     }
 
     public void Damage(float damageAmount, float KBForce, Vector2 KBAngle)
     {
         damagedState.KBForce = KBForce;
         damagedState.KBAngle = KBAngle;
-        SwitchState(damagedState);
-        currentHealth -= damageAmount;  
+        Health -= damageAmount;
+
+        if (Health <= 0)
+        {
+            SwitchState(deathState);
+            Destroy(gameObject, 1f);
+        }
+        else
+        {
+            SwitchState(damagedState);
+        }
+    }
+    public void Flip()
+    {
+        facingDirection = -facingDirection;
+        transform.Rotate(0, 180, 0);
     }
     #endregion
 }
